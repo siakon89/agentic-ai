@@ -1,0 +1,19 @@
+[project]
+name = "meeting-listener"
+version = "0.1.0"
+description = "Listen to a conversation with a Strands agent, then write a summary and action points."
+readme = "README.md"
+authors = [
+    { name = "siakon89", email = "siaterliskonsta@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "strands-agents[bidi,bidi-aec,bidi-io,bidi-pyaudio]>=1.60.0",
+]
+
+[project.scripts]
+meeting-listener = "meeting_listener.__main__:main"
+
+[build-system]
+requires = ["uv_build>=0.8.17,<0.9.0"]
+build-backend = "uv_build"
