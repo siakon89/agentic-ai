@@ -8,11 +8,15 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "strands-agents[bidi,bidi-aec,bidi-io,bidi-pyaudio]>=1.60.0",
+    "strands-agents[bidi,bidi-aec,bidi-io,bidi-pyaudio,web-fetch]>=1.60.0",
 ]
 
 [project.scripts]
 meeting-listener = "meeting_listener.__main__:main"
+assistant = "assistant.__main__:main"
+
+[tool.uv.build-backend]
+module-name = ["meeting_listener", "assistant"]
 
 [build-system]
 requires = ["uv_build>=0.8.17,<0.9.0"]

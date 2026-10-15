@@ -36,3 +36,23 @@ Optional model overrides:
 - `NOTES_MODEL_ID` (default `amazon.nova-lite-v1:0`)
 
 Use headphones, or rely on the built-in echo cancellation, so the microphone does not pick up the agent's opening line as part of the conversation.
+
+## Assistant
+
+`assistant` is the same kind of live session, limited to keeping a record of what is said. Ultron stays silent until you address him by name, then answers out loud. He does not summarize. Ctrl+C saves the transcript under `records/`.
+
+```bash
+uv run assistant
+```
+
+Its instructions are the RISEN prompt in `prompts/assistant.md`. Each extra ability lives in `src/assistant/capabilities/` and is listed in `CAPABILITIES`. Say **Ultron, research** and a topic. A swarm searches the web, checks the claims, and writes a short brief plus a long article under `records/`. Ultron speaks only the short brief. **Ultron, what did the research find** reads the latest report. **Ultron, email the research** sends that report to `siaterliskonsta@gmail.com`.
+
+Sending mail uses Amazon SES in the same region as the rest of the assistant. The verified From and To address is `siaterliskonsta@gmail.com`.
+
+The swarm uses [Nova 2 Lite](https://docs.aws.amazon.com/nova/latest/nova2-userguide/what-is-nova-2.html) (`us.amazon.nova-2-lite-v1:0`), the current Nova model with web grounding, extended thinking, and a 64K output limit:
+
+- The researcher searches with [Nova Grounding](https://docs.aws.amazon.com/nova/latest/nova2-userguide/web-grounding.html).
+- The reviewer checks claims with extended thinking set to high, and can open the cited pages.
+- The gatherer writes the short brief and the long article.
+
+Web Grounding runs in US regions. Keep `AWS_REGION` on `us-east-1`. The IAM identity also needs `bedrock:InvokeTool` on `system-tool/amazon.nova_grounding`.

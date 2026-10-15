@@ -37,9 +37,14 @@ def is_missing_audio_device(error: OSError) -> bool:
     return error.errno == _MISSING_DEVICE or "device" in str(error).lower()
 
 
-def open_streams(use_audio: bool) -> tuple[list[InputStream], list[OutputStream]]:
+def open_streams(
+    use_audio: bool,
+    *,
+    placeholder: str = _PLACEHOLDER,
+    show_text: bool = True,
+) -> tuple[list[InputStream], list[OutputStream]]:
     """Return keyboard input, and the microphone plus speakers when audio exists."""
-    console = ConsoleIO(placeholder=_PLACEHOLDER, show_reasoning=False)
+    console = ConsoleIO(placeholder=placeholder, show_reasoning=False, show_text=show_text)
     if not use_audio:
         return [console.input()], [console.output()]
 

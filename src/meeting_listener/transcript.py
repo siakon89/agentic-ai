@@ -5,26 +5,29 @@ from typing import Any
 
 _UNAVAILABLE = "[Transcript unavailable.]"
 _SESSION_CUE = "The listening session is open."
-_SPEAKER = {"user": "Speaker", "assistant": "Ultron"}
 
 
-def format_transcript(messages: Iterable[Mapping[str, Any]]) -> str:
+def format_transcript(
+    messages: Iterable[Mapping[str, Any]],
+    *,
+    assistant_name: str = "Ultron",
+) -> str:
     """Join completed speech and text turns, skipping tool traffic.
 
-    Microphone audio is stored as user text. The listener's own replies are
+    Microphone audio is stored as user text. The agent's own replies are
     assistant text. Tool calls are omitted because they are session control,
-    not part of the conversation being summarized.
+    not part of the conversation being recorded.
     """
-    lines = [_line(message) for message in messages]
+    lines = [_line(message, assistant_name) for message in messages]
     return "\n".join(line for line in lines if line)
 
 
-def _line(message: Mapping[str, Any]) -> str:
+def _line(message: Mapping[str, Any], assistant_name: str) -> str:
     text = _message_text(message.get("content", []))
     if not text or text.startswith(_SESSION_CUE):
         return ""
     role = str(message.get("role", "user"))
-    speaker = _SPEAKER.get(role, role)
+    speaker = "Speaker" if role == "user" else assistant_name
     return f"{speaker}: {text}"
 
 

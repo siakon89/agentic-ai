@@ -9,5 +9,6 @@ wheels/
 # Virtual environments
 .venv
 
-# Generated meeting notes
+# Generated meeting notes and assistant records
 notes/
+records/
