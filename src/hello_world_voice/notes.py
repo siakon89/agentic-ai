@@ -8,13 +8,13 @@ from pydantic import BaseModel, Field
 from strands import Agent
 from strands.models import BedrockModel
 
-from meeting_listener.config import aws_region, notes_model_id
+from hello_world_voice.config import aws_region, notes_model_id
 
 _NOTES_PROMPT = (
     "You write meeting notes from a transcript. "
     "Use only facts the transcript supports. "
     "Do not invent owners, dates, or tasks. "
-    "Lines labeled Ultron are earlier spoken summaries. "
+    "Lines labeled Bob are earlier spoken summaries. "
     "Use them as context, not as new discussion."
 )
 
@@ -40,7 +40,7 @@ class MeetingNotes(BaseModel):
 
 @dataclass(frozen=True)
 class SavedNotes:
-    """A catalog written to disk, plus the words Ultron should speak."""
+    """A catalog written to disk, plus the words Bob should speak."""
 
     path: Path
     markdown: str
@@ -72,7 +72,7 @@ def save_catalog(transcript: str) -> SavedNotes:
 
 
 def render_spoken(notes: MeetingNotes) -> str:
-    """Format the summary and action points for Ultron to speak."""
+    """Format the summary and action points for Bob to speak."""
     if notes.action_points:
         actions = "\n".join(_format_action(point) for point in notes.action_points)
     else:

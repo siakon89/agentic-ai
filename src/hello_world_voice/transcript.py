@@ -10,7 +10,7 @@ _SESSION_CUE = "The listening session is open."
 def format_transcript(
     messages: Iterable[Mapping[str, Any]],
     *,
-    assistant_name: str = "Ultron",
+    assistant_name: str = "Bob",
 ) -> str:
     """Join completed speech and text turns, skipping tool traffic.
 

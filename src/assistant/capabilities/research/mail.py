@@ -5,20 +5,20 @@ from pathlib import Path
 
 import boto3
 
-from meeting_listener.config import aws_region
+from hello_world_voice.config import aws_region
 
-# Verified SES identity for this project. Override with ASSISTANT_EMAIL_TO.
-DEFAULT_RECIPIENT = "siaterliskonsta@gmail.com"
-
-
-def email_recipient() -> str:
-    return os.environ.get("ASSISTANT_EMAIL_TO", DEFAULT_RECIPIENT)
+def email_recipient() -> str | None:
+    """Return ASSISTANT_EMAIL_TO, or None when it is unset."""
+    recipient = os.environ.get("ASSISTANT_EMAIL_TO", "").strip()
+    return recipient or None
 
 
 def send_research(path: Path) -> str:
-    """Email one research report. Returns the sentence Ultron should speak."""
+    """Email one research report. Returns the sentence Bob should speak."""
     recipient = email_recipient()
-    sender = os.environ.get("ASSISTANT_EMAIL_FROM", recipient)
+    if recipient is None:
+        return "Set ASSISTANT_EMAIL_TO to the verified SES address before sending research."
+    sender = os.environ.get("ASSISTANT_EMAIL_FROM", "").strip() or recipient
     _ses_send(sender, recipient, _subject(path), path.read_text(encoding="utf-8"))
     return f"Sent the research to {recipient}."
 

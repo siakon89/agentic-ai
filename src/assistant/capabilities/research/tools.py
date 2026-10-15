@@ -11,7 +11,7 @@ from assistant.capabilities.research.swarm import run_research
 def deep_research(topic: str) -> str:
     """Research a topic on the public web and return a short spoken brief.
 
-    Call this when the user addresses you as Ultron and asks you to research
+    Call this when the user addresses you as Bob and asks you to research
     something. Do not end the session.
 
     Args:
@@ -26,7 +26,7 @@ def deep_research(topic: str) -> str:
     print(f"\nSaved research to {path}", flush=True)
     return (
         "Research is saved. Speak only the following brief out loud, then stay silent. "
-        "Do not read the long article.\n\n"
+        "Do not read the sources list.\n\n"
         f"{report.short}"
     )
 
@@ -35,7 +35,7 @@ def deep_research(topic: str) -> str:
 def read_research() -> str:
     """Read the latest research swarm report.
 
-    Call this when the user addresses you as Ultron and asks what the research
+    Call this when the user addresses you as Bob and asks what the research
     found, or asks you to read a saved research record. Do not end the session.
     """
     path = latest_research()
@@ -52,7 +52,7 @@ def read_research() -> str:
 def email_research() -> str:
     """Email the latest research report to the user's address.
 
-    Call this when the user addresses you as Ultron and asks you to email the
+    Call this when the user addresses you as Bob and asks you to email the
     research. Do not end the session.
     """
     path = latest_research()

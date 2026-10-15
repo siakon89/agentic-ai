@@ -9,10 +9,10 @@ from strands.types.content import Message
 from assistant.address import guard
 from assistant.capabilities import tools
 from assistant.prompt import load_assistant_prompt
-from meeting_listener.audio import audio_devices_available, is_missing_audio_device, open_streams
-from meeting_listener.config import aws_region, voice_model_id
+from hello_world_voice.audio import audio_devices_available, is_missing_audio_device, open_streams
+from hello_world_voice.config import sonic_region, voice_model_id
 
-_PLACEHOLDER = "Recording. Say 'Ultron, research …' or address him. Ctrl+C saves the record."
+_PLACEHOLDER = "Recording. Say 'Bob, research …' or address him. Ctrl+C saves the record."
 
 
 async def listen() -> list[Message]:
@@ -51,7 +51,7 @@ def _streams(use_audio: bool):
 def _agent(use_audio: bool) -> BidiAgent:
     model = BedrockNovaSonicModel(
         model_id=voice_model_id(),
-        region=aws_region(),
+        region=sonic_region(),
         voice="matthew",
     )
     return BidiAgent(
@@ -62,11 +62,11 @@ def _agent(use_audio: bool) -> BidiAgent:
 
 
 def _explain(use_audio: bool) -> None:
-    print("Opening a recording session. Ultron stays silent until you address him.")
+    print("Opening a recording session. Bob stays silent until you address him.")
     if use_audio:
-        print('Say "Ultron" and he answers through the speakers.')
+        print('Say "Bob" and he answers through the speakers.')
     else:
         print("No microphone or speaker is available, so type the conversation.")
-    print('Say "Ultron, research" and a topic to run the research swarm.')
-    print('Say "Ultron, email the research" to send the latest report.')
+    print('Say "Bob, research" and a topic to run the research swarm.')
+    print('Say "Bob, email the research" to send the latest report.')
     print("Ctrl+C closes the session and saves the record.")

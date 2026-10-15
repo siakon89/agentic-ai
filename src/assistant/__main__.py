@@ -4,12 +4,12 @@ import asyncio
 
 from assistant.record import write_record
 from assistant.session import listen
-from meeting_listener.transcript import format_transcript
+from hello_world_voice.transcript import format_transcript
 
 
 async def run() -> None:
     messages = await listen()
-    transcript = format_transcript(messages, assistant_name="Ultron")
+    transcript = format_transcript(messages, assistant_name="Bob")
     if not transcript:
         print("The session ended before any conversation was captured.")
         return

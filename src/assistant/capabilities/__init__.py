@@ -1,8 +1,8 @@
-"""Capabilities Ultron can call during a session.
+"""Capabilities Bob can call during a session.
 
 Add a swarm by creating a package next to ``research`` and appending an
 instance to ``CAPABILITIES``. Each capability supplies its tools and the
-instructions Ultron needs to decide when to call them.
+instructions Bob needs to decide when to call them.
 """
 
 from collections.abc import Sequence
@@ -14,13 +14,13 @@ from assistant.capabilities.research import Research
 
 
 class Capability(Protocol):
-    """One ability Ultron can use without ending the session."""
+    """One ability Bob can use without ending the session."""
 
     def tools(self) -> Sequence[AgentTool]:
         """Tools to register on the voice agent."""
 
     def instructions(self) -> str:
-        """Prompt text that tells Ultron when to call those tools."""
+        """Prompt text that tells Bob when to call those tools."""
 
 
 CAPABILITIES: list[Capability] = [Research()]

@@ -6,11 +6,14 @@ import boto3
 from botocore.config import Config
 from strands import tool
 
-from meeting_listener.config import aws_region
+from hello_world_voice.config import research_region
 
-# Nova 2 Lite is the only Nova model with the nova_grounding system tool.
-# Web Grounding is served from US cross-region inference profiles.
-NOVA_2_LITE = "us.amazon.nova-2-lite-v1:0"
+# Agents can call Nova 2 Lite through the global inference profile from any
+# AWS_REGION. Web Grounding itself still needs the US CRIS profile.
+NOVA_2_LITE = "global.amazon.nova-2-lite-v1:0"
+NOVA_2_LITE_GROUNDING = "us.amazon.nova-2-lite-v1:0"
+_SEARCH_MAX_TOKENS = 2048
+_SEARCH_MAX_CHARS = 6000
 
 
 @tool
@@ -22,12 +25,13 @@ def web_search(query: str) -> str:
     """
     client = boto3.client(
         "bedrock-runtime",
-        region_name=aws_region(),
+        region_name=research_region(),
         config=Config(read_timeout=180),
     )
     response = client.converse(
-        modelId=NOVA_2_LITE,
+        modelId=NOVA_2_LITE_GROUNDING,
         messages=[{"role": "user", "content": [{"text": query}]}],
+        inferenceConfig={"maxTokens": _SEARCH_MAX_TOKENS},
         toolConfig={"tools": [{"systemTool": {"name": "nova_grounding"}}]},
     )
     return text_from_grounded_response(response)
@@ -47,7 +51,10 @@ def text_from_grounded_response(response: dict[str, Any]) -> str:
             parts.append(f"Source: {url}")
     if not parts:
         return "The search returned no text."
-    return "\n".join(parts)
+    text = "\n".join(parts)
+    if len(text) <= _SEARCH_MAX_CHARS:
+        return text
+    return text[:_SEARCH_MAX_CHARS].rstrip() + "\n[Search text truncated.]"
 
 
 def _citation_urls(citations_content: object) -> list[str]:

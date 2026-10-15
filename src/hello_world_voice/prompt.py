@@ -1,12 +1,12 @@
-"""Load Ultron's RISEN system prompt."""
+"""Load Bob's RISEN system prompt."""
 
 from pathlib import Path
 
-_PROMPT_PATH = Path(__file__).resolve().parents[2] / "prompts" / "ultron.md"
+_PROMPT_PATH = Path(__file__).resolve().parents[2] / "prompts" / "bob.md"
 
 
-def load_ultron_prompt(*, use_audio: bool) -> str:
-    """Read prompts/ultron.md and append how this session hears and speaks."""
+def load_bob_prompt(*, use_audio: bool) -> str:
+    """Read prompts/bob.md and append how this session hears and speaks."""
     prompt = _PROMPT_PATH.read_text(encoding="utf-8").strip()
     if use_audio:
         channel = (

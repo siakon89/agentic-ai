@@ -1,11 +1,11 @@
-"""Listen to a conversation, then write a summary and action points."""
+"""Talk with Bob, take notes when asked, and save them when the session closes."""
 
 import asyncio
 import sys
 
-from meeting_listener.notes import save_catalog, write_notes
-from meeting_listener.session import listen
-from meeting_listener.transcript import format_transcript
+from hello_world_voice.notes import save_catalog, write_notes
+from hello_world_voice.session import listen
+from hello_world_voice.transcript import format_transcript
 
 
 async def run() -> None:
